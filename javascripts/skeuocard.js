@@ -366,7 +366,8 @@
         }
         return _results;
       }).call(this)).every(Boolean);
-      isFilled = (fieldsFilled && (this.product != null)) || (this._state['initiallyFilled'] || false);
+      // remove initially filled value for it breaks card change on the fly
+      isFilled = (fieldsFilled && (this.product != null));
       isValid = fieldsValid && (this.product != null);
       fillStateChanged = this._state["" + face + "Filled"] !== isFilled;
       validationStateChanged = this._state["" + face + "Valid"] !== isValid;
@@ -429,8 +430,9 @@
           this._inputViews[fieldName].show();
         }
         setTimeout(function() {
-          var fieldEl, fieldLength;
-          if ((fieldEl = focused.first()) != null) {
+          var fieldLength;
+          var fieldEl = focused.first()
+          if (fieldEl != null && fieldEl.length > 0) {
             fieldLength = fieldEl[0].maxLength;
             fieldEl.focus();
             return fieldEl[0].setSelectionRange(fieldLength, fieldLength);
